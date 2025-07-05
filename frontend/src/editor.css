@@ -5,3 +5,51 @@
     margin: 10px 0;
     border-radius: 5px;
 }
+
+.app-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.editor-shell {
+    width: 800px;
+}
+
+.editor-container {
+    position: relative;
+}
+
+.editor-toolbar {
+    margin-bottom: 10px;
+}
+
+.editor-toolbar button {
+    padding: 8px 12px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #f0f0f0;
+    cursor: pointer;
+}
+
+.editor-toolbar button:hover {
+    background: #e0e0e0;
+}
+
+.editor-content {
+    border: 1px solid #ccc;
+    min-height: 200px;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative; /* For placeholder positioning */
+}
+
+.editor-placeholder {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #aaa;
+    pointer-events: none;
+    user-select: none;
+}
