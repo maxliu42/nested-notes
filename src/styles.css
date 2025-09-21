@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+/* Remove dotted outline around the main editor container when focused */
+#editor-root:focus {
+    outline: none;
+}
+
+/* Hard override CodeMirror's default dotted outline */
+#editor-root .cm-editor.cm-focused {
+    outline: none !important;
+}
+
+/* Make the editor background match the page background for a seamless canvas */
+#editor-root .cm-editor {
+    background: transparent;
+}
