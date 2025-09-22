@@ -4,6 +4,10 @@ import { depthField } from "./depthField";
 import { noteDecorations } from "./decorations";
 import { editorKeymap } from "./keymap";
 import { clipboardHandlers } from "./clipboard";
+import { markdown } from "@codemirror/lang-markdown";
+import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
+import { tags } from "@lezer/highlight";
+import { hideMarkdownMarkers } from "./markdownMarks";
 
 const appTheme = EditorView.theme({
     ".cm-editor": {
@@ -19,12 +23,20 @@ const appTheme = EditorView.theme({
     },
 });
 
+const mdStyle = HighlightStyle.define([
+    { tag: tags.emphasis, fontStyle: "italic" },
+    { tag: tags.strong, fontWeight: "700" },
+]);
+
 export function createEditor(parent: HTMLElement): EditorView {
     const startState = EditorState.create({
         doc: "",
         extensions: [
             depthField,
             noteDecorations,
+            markdown(),
+            syntaxHighlighting(mdStyle),
+            hideMarkdownMarkers,
             highlightActiveLine(),
             editorKeymap(),
             clipboardHandlers(),

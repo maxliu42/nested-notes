@@ -2,6 +2,7 @@ import { EditorSelection } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { setDepthsForLines, getLineDepth, setLineDepthEffect } from "./depthField";
 import { insertNewline } from "@codemirror/commands";
+import { Text } from "@codemirror/state";
 
 function getSelectedLineNumbers(view: EditorView): number[] {
     const { state } = view;
@@ -57,4 +58,35 @@ export function insertNewlineWithDepth(view: EditorView): boolean {
         effects: setLineDepthEffect.of({ line: currentLineNumber, depth: currentDepth }),
     });
     return true;
+}
+
+function wrapOrUnwrap(view: EditorView, marker: string): boolean {
+    const { state } = view;
+    const ranges = state.selection.ranges;
+    const changes = [] as { from: number; to: number; insert: string }[];
+    for (const r of ranges) {
+        const from = r.from;
+        const to = r.to;
+        const text = state.sliceDoc(from, to);
+        const hasWrap = text.startsWith(marker) && text.endsWith(marker);
+        if (hasWrap && text.length >= marker.length * 2) {
+            // unwrap
+            changes.push({ from: to - marker.length, to: to, insert: "" });
+            changes.push({ from: from, to: from + marker.length, insert: "" });
+        } else {
+            // wrap
+            changes.push({ from, to: from, insert: marker });
+            changes.push({ from: to, to: to, insert: marker });
+        }
+    }
+    view.dispatch({ changes });
+    return true;
+}
+
+export function toggleBold(view: EditorView): boolean {
+    return wrapOrUnwrap(view, "**");
+}
+
+export function toggleItalic(view: EditorView): boolean {
+    return wrapOrUnwrap(view, "*");
 }
