@@ -2,7 +2,7 @@ import { EditorState } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { getDepths, setAllDepthsEffect } from "./depthField";
 
-function serializeDoc(state: EditorState): string {
+export function serializeDoc(state: EditorState): string {
     const depths = getDepths(state);
     const lines: string[] = [];
     for (let ln = 1; ln <= state.doc.lines; ln++) {
@@ -13,7 +13,7 @@ function serializeDoc(state: EditorState): string {
     return lines.join("\n");
 }
 
-function parseDoc(text: string): { doc: string; depths: number[] } {
+export function parseDoc(text: string): { doc: string; depths: number[] } {
     const depths: number[] = [];
     const outLines: string[] = [];
     const lines = text.split(/\r?\n/);
@@ -82,12 +82,11 @@ export async function importFromFile(view: EditorView): Promise<void> {
     }
     if (text == null) return;
     const parsed = parseDoc(text);
-    const tr = view.state.update({ changes: { from: 0, to: view.state.doc.length, insert: parsed.doc } });
-    const after = tr.state;
-    const depths = parsed.depths;
-    // Pad depths to document lines if mismatch
-    const filled =
-        depths.length === after.doc.lines ? depths : new Array(after.doc.lines).fill(0).map((_, i) => depths[i] ?? 0);
-    const tr2 = after.update({ effects: setAllDepthsEffect.of({ depths: filled }) });
-    view.dispatch(tr, tr2);
+    // Compute line count from the inserted string so we can apply depths in the same transaction
+    const numLines = parsed.doc.split(/\r?\n/).length;
+    const filled = new Array(numLines).fill(0).map((_, i) => parsed.depths[i] ?? 0);
+    view.dispatch({
+        changes: { from: 0, to: view.state.doc.length, insert: parsed.doc },
+        effects: setAllDepthsEffect.of({ depths: filled }),
+    });
 }
