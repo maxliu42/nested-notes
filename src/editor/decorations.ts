@@ -1,19 +1,20 @@
 import { EditorView, Decoration, DecorationSet, ViewPlugin, ViewUpdate } from "@codemirror/view";
 import { getDepths, INDENT_WIDTH_PX } from "./depthField";
 
-// Color palette for indent guides, cycles with depth
+// Pastel palette for indent guides (softer hues)
 const GUIDE_COLORS = [
-    "#ef4444", // red-500
-    "#f97316", // orange-500
-    "#eab308", // yellow-500
-    "#22c55e", // green-500
-    "#06b6d4", // cyan-500
-    "#6366f1", // indigo-500
-    "#a855f7", // purple-500
-    "#ec4899", // pink-500
+    "#fecaca", // red-200
+    "#fed7aa", // orange-200
+    "#fef08a", // yellow-200
+    "#bbf7d0", // green-200
+    "#a5f3fc", // cyan-200
+    "#c7d2fe", // indigo-200
+    "#e9d5ff", // purple-200
+    "#fbcfe8", // pink-200
 ];
 
-const BASE_BAR_COLOR = "#111111"; // depth 0 bar (page edge)
+// depth 0 bar (page edge) uses first palette color (red pastel)
+const BASE_BAR_COLOR = GUIDE_COLORS[0];
 
 function styleForDepth(depth: number): string {
     // Visual grammar: bars define the active left boundary; text sits right next to the deepest bar.

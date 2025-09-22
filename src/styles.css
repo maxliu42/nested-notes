@@ -22,3 +22,8 @@ body,
 #editor-root .cm-editor {
     background: transparent;
 }
+
+/* Warmer beige page background */
+body {
+    background-color: #f7f1e8;
+}
