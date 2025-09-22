@@ -90,3 +90,11 @@ export function toggleBold(view: EditorView): boolean {
 export function toggleItalic(view: EditorView): boolean {
     return wrapOrUnwrap(view, "*");
 }
+
+export function toggleStrike(view: EditorView): boolean {
+    return wrapOrUnwrap(view, "~~");
+}
+
+export function toggleUnderline(view: EditorView): boolean {
+    return wrapOrUnwrap(view, "++");
+}

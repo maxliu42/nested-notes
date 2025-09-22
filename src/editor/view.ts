@@ -8,6 +8,7 @@ import { markdown } from "@codemirror/lang-markdown";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
 import { hideMarkdownMarkers } from "./markdownMarks";
+import { smartPunctuation } from "./smartPunctuation";
 
 const appTheme = EditorView.theme({
     ".cm-editor": {
@@ -34,9 +35,10 @@ export function createEditor(parent: HTMLElement): EditorView {
         extensions: [
             depthField,
             noteDecorations,
-            markdown(),
+            markdown({ addKeymap: false }),
             syntaxHighlighting(mdStyle),
             hideMarkdownMarkers,
+            smartPunctuation(),
             highlightActiveLine(),
             editorKeymap(),
             clipboardHandlers(),
