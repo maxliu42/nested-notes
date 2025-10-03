@@ -19,6 +19,12 @@ jobs:
                   node-version: 20
             - uses: actions/configure-pages@v5
             - run: npm ci
+            - name: Validate secrets
+              run: |
+                  if [ -z "${{ secrets.VITE_SUPABASE_URL }}" ] || [ -z "${{ secrets.VITE_SUPABASE_ANON_KEY }}" ]; then
+                    echo "ERROR: Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY in repo secrets"
+                    exit 1
+                  fi
             - name: Build
               run: npm run build
               env:
