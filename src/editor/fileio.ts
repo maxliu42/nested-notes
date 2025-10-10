@@ -8,7 +8,7 @@ export function serializeDoc(state: EditorState): string {
     for (let ln = 1; ln <= state.doc.lines; ln++) {
         const d = depths[ln - 1] ?? 0;
         const text = state.doc.line(ln).text;
-        lines.push(`${">".repeat(d)}${text.length ? " " : ""}${text}`);
+        lines.push(`${">".repeat(d)}${text}`);
     }
     return lines.join("\n");
 }

@@ -15,7 +15,7 @@ function serializeSelection(state: EditorState, text: string): string {
     for (let ln = fromLine; ln <= toLine; ln++) {
         const d = depths[ln - 1] ?? 0;
         const content = state.doc.line(ln).text;
-        lines.push(`${">".repeat(d)}${content.length ? " " : ""}${content}`);
+        lines.push(`${">".repeat(d)}${content}`);
     }
     return lines.join("\n");
 }
